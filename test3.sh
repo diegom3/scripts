@@ -36,4 +36,5 @@ echo "Matched provider values: ${matched_provider_values[@]}"
     provider_values=$(echo "$line" | grep -oP '\(.*\)' | tr -d '()')
     provider_values=$(echo "$line" | grep -oP '\(["'\'']*[^"'\'']*[,"'\'']*\)')
     provider_values=$(echo "$line" | grep -oP '\[.*\]' | tr -d '[:space:][]')
+    provider_values=$(echo "$line" | awk -F'[()]' '{print $2}' | tr -d '[:space:]')
 
