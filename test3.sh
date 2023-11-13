@@ -5,20 +5,25 @@ file="example_file.txt"
 
 # Read the file line by line
 while IFS= read -r line; do
-  # Check if the line contains the array named "provider"
-  if [[ $line == *provider* ]]; then
-    # Extract the values from the array
-    provider_values=$(echo "$line" | grep -oP '\(.*\)' | tr -d '()' | tr -d '"' | tr -s ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-    
-    # Convert the space-separated values to an array
-    IFS=" " read -r -a provider_array <<< "$provider_values"
+  # Check if the line contains the array "provider"
+  if [[ $line == *provider=* ]]; then
+    # Extract the values of the provider array
+    provider_values=$(echo "$line" | cut -d'=' -f2 | tr -d '[:space:]')
 
-    # Define a key-value map
+    # Define a key-value map for providers
     declare -A provider_map
-    provider_map=([value1]="mapped_value1" [value2]="mapped_value2" [value3]="mapped_value3")
+    provider_map=(
+      ["value1"]="mapped_value1"
+      ["value2"]="mapped_value2"
+      ["value3"]="mapped_value3"
+      ["value4"]="mapped_value4"
+    )
 
-    # Check if the values in the provider array match the key-value map
-    for value in "${provider_array[@]}"; do
+    # Split the comma-separated values into an array
+    IFS=',' read -ra values_array <<< "$provider_values"
+
+    # Iterate through the values and check against the map
+    for value in "${values_array[@]}"; do
       mapped_value="${provider_map[$value]}"
       if [ -n "$mapped_value" ]; then
         # If a match is found, add it to another variable
