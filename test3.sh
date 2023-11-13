@@ -31,3 +31,9 @@ done < "$file"
 
 # Display the matched provider values
 echo "Matched provider values: ${matched_provider_values[@]}"
+
+    provider_values=$(echo "$line" | sed -n 's/.*provider=("\(.*\)").*/\1/p' | tr -d '", ')
+    provider_values=$(echo "$line" | grep -oP '\(.*\)' | tr -d '()')
+    provider_values=$(echo "$line" | grep -oP '\(["'\'']*[^"'\'']*[,"'\'']*\)')
+    provider_values=$(echo "$line" | grep -oP '\[.*\]' | tr -d '[:space:][]')
+
