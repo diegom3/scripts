@@ -32,6 +32,12 @@ echo "Script appending completed."
 
 #second script
 
+#!/bin/bash
+
+# Remote repository URL
+REMOTE_REPO_URL="https://github.com/username/repository"
+
+# Local directory to save scripts
 LOCAL_DIR="./local_scripts"
 
 # File containing script names
