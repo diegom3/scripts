@@ -24,3 +24,33 @@ for script_name in "${script_names[@]}"; do
 done
 
 echo "Script appending completed."
+
+
+
+
+
+
+#second script
+
+LOCAL_DIR="./local_scripts"
+
+# File containing script names
+SCRIPT_NAMES_FILE="script_names.txt"
+
+# Local file to append scripts
+LOCAL_FILE="combined_scripts.sh"
+
+# Ensure the local directory exists
+mkdir -p "$LOCAL_DIR"
+
+# Loop through each script name in the file
+while IFS= read -r script_name; do
+    # Check if script exists in remote repository
+    if curl -sSL "$REMOTE_REPO_URL/$script_name" -o /dev/null -w "%{http_code}" | grep -q "200"; then
+        # If script exists, append its contents to local file
+        curl -sSL "$REMOTE_REPO_URL/$script_name" >> "$LOCAL_DIR/$LOCAL_FILE"
+        echo "Appended $script_name to $LOCAL_FILE"
+    else
+        echo "Script $script_name not found in repository"
+    fi
+done < "$SCRIPT_NAMES_FILE"
