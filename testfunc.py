@@ -61,3 +61,29 @@ def tf_plan_apply(args):
         raise  # Re-raise the exception to propagate it upwards
 
 
+def tf_plan_destroy(args):
+    try:
+        if args.stage == "destroy" or os.getenv("TERRAFORM_DESTROY", "false").lower() == "true":
+            print_info("Exporting Datadog keys from vault for destroy .......")
+            export_datadog_keys(args)
+            print_success("Processed Datadog keys for destroy")
+            print_info("Creating Datadog variables for Terraform destroy ......")
+            create_datadog_variables(args)
+            print_success("Created Datadog variables for destroy")
+            print_info(f"Moving TF var file {os.environ['TF_VARS']} to be *.auto.tfvars for destroy .....")
+            copy_auto_tfvars(args)
+            print_success("Copied auto tfvars for destroy")
+            print_info(f"Processing TF vars for destroy ......")
+            process_tfvars(args)
+            print_success("Finished processing TF vars for destroy")
+
+            tf_run_destroy(args)
+            print_success("Finished TF destroy run")
+        else:
+            print_info("Stage is not 'destroy' and TERRAFORM_DESTROY is not set to true. Skipping destroy steps.")
+    except Exception as e:
+        print_error(f"An unexpected error occurred during destroy: {e}")
+        traceback.print_exc()  # This prints the full stack trace
+        raise  # Re-raise the exception to propagate it upwards
+
+
