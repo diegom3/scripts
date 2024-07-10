@@ -87,3 +87,48 @@ def tf_plan_destroy(args):
         raise  # Re-raise the exception to propagate it upwards
 
 
+def ami_exists_with_tag(args, unique_hash):
+    """
+    Check if an AMI exists with a matching 'Code Hash' tag value and return its details if it does.
+    
+    :param unique_hash: The hash value to check against existing AMIs.
+    :return: A tuple (exists: bool, ami_details: dict)
+    """
+    try:
+        ec2 = boto3.client('ec2')
+        sts = boto3.client('sts')
+        
+        # Get the account ID
+        account_id = sts.get_caller_identity().get('Account')
+        
+        if args.debug: 
+            print_debug(f"Checking image with Code Hash : {unique_hash}")
+            print_debug(f"Current AWS Account ID: {account_id}")
+        
+        response = ec2.describe_images(
+            Filters=[
+                {'Name': 'tag:Code Hash', 'Values': [unique_hash]},
+                {'Name': 'state', 'Values': ['available']}  # Consider only available AMIs
+            ]
+        )
+
+        images = response.get('Images', [])
+        print_info(f"Found images : {images}")
+        exists = len(images) > 0
+        ami_details = images[0] if exists else {}
+        if exists: 
+            if args.debug:
+                print_debug(f"Current ami to json details {ami_details}")
+            with open(f'{args.build_directory}/source_ami_id.txt', 'w') as file:
+                json.dump(ami_details, file, indent=4)
+            print_info(f"AMI ID details written to file.")
+        else: 
+            print_info(f"No ami found for hash {unique_hash}")
+    
+        return exists, ami_details
+    except Exception as e:
+        print_error(f"An error occurred checking hash in aws: {e}") 
+        traceback.print_exc()  # This prints the full stack trace
+        raise  # Re-raise the exception to propagate it upwards
+
+
