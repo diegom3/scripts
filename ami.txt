@@ -1,0 +1,95 @@
+{
+    "Architecture": "x86_64",
+    "CreationDate": "2024-07-15T19:16:47.000Z",
+    "ImageId": "ami-0a8ef14860313450c",
+    "ImageLocation": "660023206487/RHEL8_X-CFG-AMI-2024-07-15-1846",
+    "ImageType": "machine",
+    "Public": false,
+    "OwnerId": "660023206487",
+    "PlatformDetails": "Red Hat Enterprise Linux",
+    "UsageOperation": "RunInstances:0010",
+    "State": "available",
+    "BlockDeviceMappings": [
+        {
+            "DeviceName": "/dev/sda1",
+            "Ebs": {
+                "DeleteOnTermination": true,
+                "SnapshotId": "snap-05af08efafbf1330e",
+                "VolumeSize": 50,
+                "VolumeType": "gp2",
+                "Encrypted": true
+            }
+        }
+    ],
+    "EnaSupport": true,
+    "Hypervisor": "xen",
+    "Name": "RHEL8_X-CFG-AMI-2024-07-15-1846",
+    "RootDeviceName": "/dev/sda1",
+    "RootDeviceType": "ebs",
+    "SriovNetSupport": "simple",
+    "Tags": [
+        {
+            "Key": "AMIBUILD",
+            "Value": "YES"
+        },
+        {
+            "Key": "Name",
+            "Value": "aws"
+        },
+        {
+            "Key": "Patch Group",
+            "Value": "exempt"
+        },
+        {
+            "Key": "Schedule",
+            "Value": ""
+        },
+        {
+            "Key": "Support",
+            "Value": "DL-CloudServicesWaasPod@Citizensbank.com"
+        },
+        {
+            "Key": "ApplicationID",
+            "Value": "SYSID-05602"
+        },
+        {
+            "Key": "Code Hash",
+            "Value": "d0913289fbc7ee3c2991d88ddf129c6bcd28012e"
+        },
+        {
+            "Key": "OSType",
+            "Value": "redhat-8.5"
+        },
+        {
+            "Key": "BusinessMapping",
+            "Value": "AWS"
+        },
+        {
+            "Key": "Criticality",
+            "Value": "Tier 1"
+        },
+        {
+            "Key": "Requester",
+            "Value": "dustin.mason@citizensbank.com"
+        },
+        {
+            "Key": "assignmentgroup",
+            "Value": "AWS Platform Support"
+        },
+        {
+            "Key": "Environment",
+            "Value": "dev"
+        },
+        {
+            "Key": "applicationname",
+            "Value": "RHEL8_X-CFG-AMI"
+        },
+        {
+            "Key": "TimeStamp",
+            "Value": "2024-07-15"
+        }
+    ],
+    "VirtualizationType": "hvm",
+    "BootMode": "uefi-preferred",
+    "DeregistrationProtection": "disabled"
+}
